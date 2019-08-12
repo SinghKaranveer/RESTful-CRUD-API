@@ -13,14 +13,30 @@ const connect = (cb) =>{
         cb();
     else
     {
-        MongoClient.connect(url, mongoOptionsm, (err, client) =>{
+        MongoClient.connect(url, mongoOptions, (err, database) =>{
             if(err)
                 cb(err);
             else
             {
-                state.db = client.db(dbname);
+                state.db = database.db(dbname);
+                state.db.createCollection("customers", (err, res) =>{
+                    if(err) throw err;
+                    console.log("Collection is created");
+                    database.close();
+                });
                 cb();
             }
         });
     }
 }
+
+const getDB = () =>{
+    return state.db;
+}
+
+function insert(collection)
+{
+
+}
+
+module.exports = {getDB, connect};

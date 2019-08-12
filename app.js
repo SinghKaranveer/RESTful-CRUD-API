@@ -7,7 +7,19 @@ const app = express();
 const url = 'mongodb://localhost:27017/mydb';
 app.use(express.json());
 
-
+db.connect((err) =>{
+    if(err)
+    {
+        console.log("Unable to connect to database");
+        process.exit(1);
+    }
+    else
+    {
+        app.listen(3001, () =>{
+            console.log("Connected to database");
+        });
+    }
+})
 
 const schema = {
     name :Joi.string().min(3).required()
